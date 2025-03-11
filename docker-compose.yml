@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  mcp-clickhouse:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mcp-clickhouse
+    restart: unless-stopped
+    environment:
+      - CLICKHOUSE_HOST=${CLICKHOUSE_HOST:-sql-clickhouse.clickhouse.com}
+      - CLICKHOUSE_PORT=${CLICKHOUSE_PORT:-8443}
+      - CLICKHOUSE_USER=${CLICKHOUSE_USER:-demo}
+      - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD:-}
+      - CLICKHOUSE_SECURE=${CLICKHOUSE_SECURE:-true}
+      - CLICKHOUSE_VERIFY=${CLICKHOUSE_VERIFY:-true}
+      - CLICKHOUSE_CONNECT_TIMEOUT=${CLICKHOUSE_CONNECT_TIMEOUT:-30}
+      - CLICKHOUSE_SEND_RECEIVE_TIMEOUT=${CLICKHOUSE_SEND_RECEIVE_TIMEOUT:-30}
+      - CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE:-}
+    ports:
+      - "8000:8000"  # Expose the MCP server port
+    volumes:
+      - ./:/app  # Mount the current directory for development (optional)
